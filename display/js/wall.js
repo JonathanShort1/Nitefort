@@ -20,18 +20,15 @@ class Wall {
     ];
   }
 
-  static unitVec(v) {
-    let [x, y] = v;
+  static unitVec(x, y) {
     let hypot = Math.hypot(x, y);
     return [x / hypot, y / hypot];
   }
 
   static vecEq(a, b) {
-    a=this.unitVec(a);
-    b=this.unitVec(b);
     return {
       start: a,
-      dir: [b[0] - a[0], b[1] - a[1]],
+      dir: Wall.unitVec(b[0] - a[0], b[1] - a[1]),
       limit: Math.hypot(a[0] - b[0], a[1] - b[1])
     }
   }
