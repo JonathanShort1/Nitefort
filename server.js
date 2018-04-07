@@ -22,17 +22,15 @@ router.use(bodyParser.json());
 // ==================================================
 
 router.ws('/user', function (ws, req) {
-  ws.on('open', function () {
-    console.log('connection made!');
-    ws.clientId = clientId;
-    clients.push(ws);
-    clientId += 1;
-  });
+  console.log('Client connection made!' + clientId);
+  ws.clientId = clientId;
+  clients.push(ws);
+  clientId += 1;
 
-  ws.on('message', function (msg) {
+  ws.on("message", function (msg) {
     console.log('Message received');
-    console.log(JSON.stringify(msg));
-    handleClient(ws, msg);
+    console.log(msg);
+    handleClient(ws, JSON.parse(msg));
   });
 
   ws.on('close', function () {
@@ -43,14 +41,12 @@ router.ws('/user', function (ws, req) {
 });
 
 router.ws('/display', function (ws, req) {
-  ws.on('open', function () {
-    if (game == null) {
-      console.log('display connected!');
-      game = ws;
-    } else {
-      console.log('error: game still in progress');
-    }
-  });
+  if (game == null) {
+    console.log('display connected!');
+    game = ws;
+  } else {
+    console.log('error: game still in progress');
+  }
 
   ws.on('message', function (msg) {
     console.log('Message received');
