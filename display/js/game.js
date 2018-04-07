@@ -8,7 +8,6 @@ class Game {
   }
 
   init() {
-    controller.init();
     let canvas = $("#canvas")[0];
     let canvas_wrapper = $("#canvas-wrapper")[0];
     this.width = this.height = $(window).height();
@@ -57,7 +56,9 @@ class Game {
     for (let id in model.players) {
       this.drawPlayer(model.players[id]);
     }
-
+    for (let wall of model.walls) {
+      this.drawWall(wall);
+    }
   }
 
   drawPlayer(player){
@@ -73,6 +74,16 @@ class Game {
     ctx.arc(shot.x, shot.y, model.shotSize, 0, 2*Math.PI);
     ctx.fillStyle = "white";
     ctx.fill();
+  }
+
+  drawWall(wall){
+    let ctx = this.ctx;
+    ctx.beginPath();
+    ctx.moveTo(wall.a[0],wall.a[1]);
+    ctx.lineTo(wall.b[0],wall.b[1]);
+    ctx.strokeStyle="white";
+    ctx.lineWidth=4;
+    ctx.stroke();
   }
 }
 
