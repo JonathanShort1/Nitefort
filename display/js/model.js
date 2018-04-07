@@ -80,16 +80,7 @@ class Player {
   step(dt) {
     this.x += this.dx * dt;
     this.y += this.dy * dt;
-  }
 
-  move(x, y) {
-    this.dx = x;
-    this.dy = y;
-    let hypot = Math.hypot(this.dx, this.dy);
-    if (hypot !== 0) {
-      this.dx *= model.playerSpeed / hypot;
-      this.dy *= model.playerSpeed / hypot;
-    }
     if (this.x < model.playerSize) {
       this.x = model.playerSize;
     }
@@ -101,6 +92,16 @@ class Player {
     }
     if (this.y > game.height - model.playerSize) {
       this.y = game.height - model.playerSize;
+    }
+  }
+
+  move(x, y) {
+    this.dx = x;
+    this.dy = y;
+    let hypot = Math.hypot(this.dx, this.dy);
+    if (hypot !== 0) {
+      this.dx *= model.playerSpeed / hypot;
+      this.dy *= model.playerSpeed / hypot;
     }
   }
 }
