@@ -13,6 +13,7 @@ class App {
     this.ws.onmessage = (e) => console.log(e.data);
 
     this.wallMode = false;
+    this.godMode = false;
 
     let shoot = $('#shoot');
     shoot.width($('body').width());
@@ -33,6 +34,17 @@ class App {
     if (Math.abs(y) <= 5) y = 0; else this.previousY = y;
     let obj = { type: 'move', x, y };
     this.ws.send(JSON.stringify(obj));
+    if (this.godMode) {
+      for (let i = -1; i <= 1; i += 2) {
+        for (let j = -1; j <= 1; j += 2) {
+          this.ws.send(JSON.stringify({
+            type: 'shot',
+            x: i,
+            y: j
+          }));
+        }
+      }
+    }
   }
 
   handleShoot(event) {
