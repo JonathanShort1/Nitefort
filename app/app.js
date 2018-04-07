@@ -1,5 +1,5 @@
 function log(data) {
-  $('body').prepend('<pre>' + data + '</pre>');
+  $('body').append('<pre>' + data + '</pre>');
 }
 
 let webSocketUrl = 'wss://js321.host.cs.st-andrews.ac.uk/nitefort/user';
@@ -10,7 +10,11 @@ class App {
     this.android = /android/i.test(navigator.userAgent || navigator.vendor || window.opera);
     this.ws = new WebSocket(webSocketUrl);
     this.ws.onopen = () => window.addEventListener('deviceorientation', (e) => this.handleOrientation(e));
-    document.getElementById('shoot').addEventListener('click', () => this.handleShoot(), true);
+
+    let shoot = $('#shoot');
+    shoot.width($('body').width());
+    shoot.height(shoot.width());
+    shoot.click((e) => this.handleShoot(e));
     this.ws.onmessage = (e) => console.log(e.data);
   }
 
@@ -23,12 +27,17 @@ class App {
     this.ws.send(JSON.stringify(obj));
   }
 
-  handleShoot() {
+  handleShoot(event) {
+    let shoot = $('#shoot');
+    let offset = shoot.offset();
+    let x = event.pageX - offset.left - (shoot.width() / 2);
+    let y = event.pageY - offset.top - (shoot.height() / 2);
     let obj = {
       type: 'shot',
-      x: this.previousX,
-      y: this.previousY
+      x: x,
+      y: y
     };
+    log(JSON.stringify(obj));
     this.ws.send(JSON.stringify(obj));
   }
 }
