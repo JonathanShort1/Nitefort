@@ -9,10 +9,7 @@ class App {
   init() {
     this.android = /android/i.test(navigator.userAgent || navigator.vendor || window.opera);
     this.ws = new WebSocket(webSocketUrl);
-    this.ws.onopen = () => {
-      window.addEventListener('deviceorientation', (e) => this.handleOrientation(e));
-
-    }
+    this.ws.onopen = () => window.addEventListener('deviceorientation', (e) => this.handleOrientation(e));
     document.getElementById('shoot').addEventListener('click', () => this.handleShoot(), true);
     this.ws.onmessage = (e) => console.log(e.data);
   }
