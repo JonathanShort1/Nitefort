@@ -10,11 +10,10 @@ class App {
     this.android = /android/i.test(navigator.userAgent || navigator.vendor || window.opera);
     this.ws = new WebSocket(webSocketUrl);
     this.ws.onopen = () => {
-      window.addEventListener('devicemotion', (e) => this.handleMotion(e));
       window.addEventListener('deviceorientation', (e) => this.handleOrientation(e));
+      $('#shoot').addEventListener('click', (e) => handleShoot());
     }
     this.ws.onmessage = (e) => console.log(e.data);
-    log('initialized');
   }
 
   handleOrientation(event) {
@@ -23,23 +22,18 @@ class App {
     if (Math.abs(x) <= 5) x = 0;
     if (Math.abs(y) <= 5) y = 0;
     let obj = { type: 'move', x, y };
+    this.previousX = x;
+    this.previousY = y;
     this.ws.send(JSON.stringify(obj));
   }
 
-  handleMotion(event) {
-    let x = event.accelerationIncludingGravity.x;
-    let y = event.accelerationIncludingGravity.y;
-    x = android ? x : -x;
-    y = android ? -y : y;
-    if (Math.hypot(x, y) >= 10) {
-      if (this.prevShot !== undefined
-        && (new Date().getTime()) - this.prevShot > 500) {
-        let obj = { type: 'shot', x, y };
-        this.ws.send(JSON.stringify(obj));
-        log(JSON.stringify(obj));
-      }
-      this.prevShot = new Date().getTime();
-    }
+  handleShoot() {
+    let obj = {
+      type: 'shoot',
+      x: this.previousX,
+      y: this.previousY
+    };
+    this.ws.send(JSON.stringify(obj));
   }
 }
 
