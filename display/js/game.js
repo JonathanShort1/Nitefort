@@ -27,7 +27,7 @@ class Game {
     this.prevMillis = new Date().getTime();
     setInterval(() => {
       this.step();
-    }, 50);
+    }, 20);
   }
 
   step(){
@@ -52,7 +52,9 @@ class Game {
     for (let id in model.players) {
       this.drawPlayer(model.players[id]);
     }
-
+    for (let shot of model.shots) {
+      this.drawShot(shot);
+    }
   }
 
   drawPlayer(player){
@@ -60,6 +62,13 @@ class Game {
     ctx.beginPath();
     ctx.arc(player.x, player.y, model.playerSize, 0, 2*Math.PI);
     ctx.fillStyle = player.color;
+    ctx.fill();
+  }
+  drawShot(shot) {
+    let ctx = this.ctx;
+    ctx.beginPath();
+    ctx.arc(shot.x, shot.y, model.shotSize, 0, 2*Math.PI);
+    ctx.fillStyle = "white";
     ctx.fill();
   }
 }

@@ -6,6 +6,7 @@ class Model {
     this.connectWs();
 
     this.playerSize = 7;
+    this.shotSize = 3;
     this.playerSpeed = 130; // pixels per second
     this.shotSpeed = 300;
   }
@@ -127,6 +128,20 @@ class Shot {
   step(dt) {
     this.x += this.dx * dt;
     this.y += this.dy * dt;
+
+    if (this.outOfBounds()) {
+      let i = model.shots.indexOf(this);
+      if (i !== -1) {
+        model.shots.splice(i, 1)
+      }
+    }
+  }
+
+  outOfBounds() {
+    return (this.x < -model.shotSize)
+      || (this.y < -model.shotSize)
+      || (this.x > game.width + model.shotSize)
+      || (this.y > game.height + model.shotSize);
   }
 }
 
