@@ -1,38 +1,28 @@
 let express = require('express');
-let _app = express();
+let app = express();
 let bodyParser = require("body-parser");
-let expressWs = require('express-ws')(_app);
+let expressWs = require('express-ws')(app);
 let fs = require("fs");
 let https = require("https");
 
+let clients = [];
+let games = [];
+let client_id = 0;
+let game_id = 0;
 
+let router = express.Router();
 
-// let privateKey  = fs.readFileSync('key.pem', 'utf8');
-// let certificate = fs.readFileSync('cert.pem', 'utf8');
-//
-// let credentials = {key: privateKey, cert: certificate};
-//
-//
-//
-//
-// let clients = [];
-// let games = [];
-// let client_id = 0;
-// let game_id = 0;
+app.use('/',router);
+app.use('/nitefort/',router);
 
-let app = express.Router();
-
-_app.use('/',app);
-_app.use('/nitefort',app);
-
-app.use("/display", express.static("display"));
-app.use(bodyParser.json());
+router.use("/display", express.static("display"));
+router.use(bodyParser.json());
 
 // ==================================================
 // THE WEBSOCKET COMMUNICATION
 // ==================================================
 
-app.ws("/user", function(ws, req) {
+router.ws("/user", function(ws, req) {
   ws.on("open", function() {
     console.log("connection made!");
     ws.user_id = client_id;
@@ -48,12 +38,12 @@ app.ws("/user", function(ws, req) {
 
   ws.on("close", function() {
     console.log("client leaving");
-    let index = clients.indexof(ws);
+    let index = clients.indexOf(ws);
     clients.splice(index, 1);
   });
 });
 
-app.ws("/display", function(ws, req) {
+router.ws("/display", function(ws, req) {
   ws.on("open", function() {
     console.log("display connected!");
     ws.display_id = game_id;
@@ -69,7 +59,7 @@ app.ws("/display", function(ws, req) {
 
   ws.on("close", function() {
     console.log("display disconnected");
-    let index = games.indexof(ws);
+    let index = games.indexOf(ws);
     games.splice(index, 1);
   })
 });
@@ -78,18 +68,23 @@ app.ws("/display", function(ws, req) {
 /**
  * Log any server-side errors to the console and send 500 error code.
  */
-app.use(function (err, req, res, next) {
+router.use(function (err, req, res, next) {
     console.error(err.stack);
     res.status(500).send(err.message);
 });
-
-//pass in your express app and credentials to create an https server
-// var httpsServer = https.createServer(credentials, app);
-// httpsServer.listen(21067);
-_app.listen(21067);
+app.listen(21067);
 console.log('Server running, access game by going to http://138.251.206.220:21067/Nitefort/game.html');
 
 
 // ==================================================
 // IMPLEMENT THE API AND WEBSOCKET COMMUNICATION HERE
 // ==================================================
+
+
+function handleClient(ws, msg, clients) {
+
+}
+
+function handleDisplay() {
+
+}
