@@ -63,11 +63,13 @@ class Game {
 
   drawPlayer(player){
     let ctx = this.ctx;
-    ctx.beginPath();
+    /*ctx.beginPath();
     ctx.arc(player.x, player.y, player.size, 0, 2*Math.PI);
     ctx.fillStyle = player.color;
-    ctx.fill();
+    ctx.fill();*/
+    ctx.drawImage(player.skin, player.x, player.y, player.size, player.size);
   }
+
   drawShot(shot) {
     let ctx = this.ctx;
     ctx.beginPath();

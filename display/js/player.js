@@ -1,11 +1,13 @@
 let colors = ["red", "green", "blue", "yellow", "orange"];
+let skins = ["batman.jpeg", "america.png", "hulk.jpeg", "spiderman.jpg", "superman.jpg"];
 let spawnBorder = 50;
-
 
 class Player {
   constructor(msg) {
     this.id = msg.id;
     this.color = colors[this.id % colors.length];
+    this.skin = new Image();
+    this.skin.src = "images/" + skins[this.id % skins.length];
     this.x = Math.floor(Math.random() * (game.width - spawnBorder * 2)) + spawnBorder;
     this.y = Math.floor(Math.random() * (game.height - spawnBorder * 2)) + spawnBorder;
     this.dx = 0;

@@ -4,7 +4,7 @@ from flask_ask import Ask, statement
 app = Flask(__name__)
 ask = Ask(app, '/')
 
-@ask.intent('HelloIntent')
+@ask.intent('shrink')
 def hello(firstname):
     text = render_template('hello', firstname=firstname)
     return statement(text).simple_card('Hello', text)

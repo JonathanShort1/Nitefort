@@ -63,6 +63,10 @@ router.ws('/display', function (ws, req) {
   })
 });
 
+app.post("/voice", function(req, res) {
+  voiceHandler();
+});
+
 
 /**
  * Log any server-side errors to the console and send 500 error code.
@@ -94,6 +98,14 @@ function handleClient(ws, msg) {
       case 'shot':
         game.send(JSON.stringify({
           type: 'shot',
+          id: ws.clientId,
+          x: msg.x,
+          y: msg.y
+        }));
+        break;
+      case 'wall':
+        game.send(JSON.stringify({
+          type: 'wall',
           id: ws.clientId,
           x: msg.x,
           y: msg.y
