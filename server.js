@@ -34,8 +34,6 @@ router.ws('/user', function (ws, req) {
   clientId += 1;
 
   ws.on("message", function (msg) {
-    // console.log('Message received');
-    // console.log(msg);
     handleClient(ws, JSON.parse(msg));
   });
 
@@ -56,7 +54,6 @@ router.ws('/display', function (ws, req) {
 
   ws.on('message', function (msg) {
     console.log('Message received');
-    console.log(JSON.stringify(msg));
     handleDisplay(ws, msg);
   });
 
@@ -84,20 +81,51 @@ console.log('Server running, access game by going to http://138.251.206.220:2106
 
 
 function handleClient(ws, msg) {
-  switch (msg.type) {
-    case 'move':
-      game.send(JSON.stringify({
-        type: 'move',
-        id: ws.clientId,
-        x: msg.x,
-        y: msg.y
-      }));
-      break;
-    default:
-      console.log('unknown type');
+  if (game != null) {
+    switch (msg.type) {
+      case 'move':
+        game.send(JSON.stringify({
+          type: 'move',
+          id: ws.clientId,
+          x: msg.x,
+          y: msg.y
+        }));
+        break;
+      case 'shot':
+        game.send(JSON.stringify({
+          type: 'shot',
+          id: ws.clientId,
+          x: msg.x,
+          y: msg.y
+        }));
+        break;
+      default:
+        console.log('unknown type: ' + msg.type);
+    }
+  } else {
+    console.log(msg);
+    ws.send(JSON.stringify({"type" : "error", "message" : "No game available"}));
   }
 }
 
 function handleDisplay(ws, msg) {
-
+  let clientWS = clients.find(c => c.clientId == msg.id);
+  if (clientWS != null) {
+    switch (msg.type) {
+      case 'death':
+        clientWS.send(JSON.stringify({
+          type: 'death',
+          killedBy: msg.killedBy,
+        }));
+        break;
+      default:
+        console.log('unknown type');
+    }
+  } else {
+    console.log(msg);
+    ws.send(JSON.stringify({
+      "type" : "error",
+       "message" : "Client Id not present"
+     }));
+  }
 }
