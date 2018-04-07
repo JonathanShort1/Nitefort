@@ -13,7 +13,7 @@ class App {
       window.addEventListener('deviceorientation', (e) => this.handleOrientation(e));
 
     }
-    $('#shoot').click(() => this.handleShoot());
+    document.getElementById('shoot').addEventListener('click', () => this.handleShoot(), true);
     this.ws.onmessage = (e) => console.log(e.data);
   }
 
