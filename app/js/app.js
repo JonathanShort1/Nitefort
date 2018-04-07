@@ -8,14 +8,16 @@ class App {
 
   init() {
     this.ws = new WebSocket(webSocketUrl);
-    this.ws.onopen = () => window.addEventListener('deviceorientation', (e) => this.handleOrientation(e), true);
+    console.log(this.ws);
+    window.addEventListener('deviceorientation', (e)=>{this.handleOrientation(e)}, true);
     log('initialized');
   }
 
   handleOrientation(event) {
+
     var x = event.gamma;
     var y = event.beta;
-    var obj = { type: 'move', x, y }
+    var obj = { type: 'move', x:x, y:y }
     this.ws.send(JSON.stringify(obj));
   }
 }

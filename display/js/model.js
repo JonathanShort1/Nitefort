@@ -1,4 +1,4 @@
-let playerSpeed = 10; // pixels per second
+let playerSpeed = 100; // pixels per second
 let playerSize = 7;   // px
 
 class Model {
@@ -17,7 +17,7 @@ class Model {
       this.ws = new WebSocket(`ws://${location.host}/display`);
     }
     this.ws.onopen = () => {
-      // on open
+      game.startGame();
       console.log("connected");
     };
     this.ws.onclose = this.connectWs;
@@ -41,8 +41,8 @@ class Model {
         player.dx = msg.x;
         player.dy = msg.y;
         let hypot = Math.hypot(player.dx, player.dy);
-        player.dx *= playerSpeed * hypot;
-        player.dy *= playerSpeed * hypot;
+        player.dx *= playerSpeed / hypot;
+        player.dy *= playerSpeed / hypot;
         break;
     }
   }

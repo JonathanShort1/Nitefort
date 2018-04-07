@@ -15,6 +15,7 @@ app.use('/', router);
 app.use('/nitefort/', router);
 
 router.use('/display', express.static('display'));
+router.use('/user', express.static('app'));
 router.use(bodyParser.json());
 
 // ==================================================
@@ -22,14 +23,19 @@ router.use(bodyParser.json());
 // ==================================================
 
 router.ws('/user', function (ws, req) {
-  console.log('Client connection made!' + clientId);
+  console.log('Client connection made! ' + clientId);
   ws.clientId = clientId;
   clients.push(ws);
+  if (game != null) {
+    game.send(JSON.stringify({"type" : "playerConnect", "id" : clientId}));
+  } else {
+    ws.send(JSON.stringify({"type" : "error", "message" : "No game available"}));
+  }
   clientId += 1;
 
   ws.on("message", function (msg) {
-    console.log('Message received');
-    console.log(msg);
+    // console.log('Message received');
+    // console.log(msg);
     handleClient(ws, JSON.parse(msg));
   });
 
