@@ -8,7 +8,6 @@ class App {
 
   init() {
     this.android = /android/i.test(navigator.userAgent || navigator.vendor || window.opera);
-    alert(this.android ? 'android' : 'not android');
     this.ws = new WebSocket(webSocketUrl);
     this.ws.onopen = () => {
       window.addEventListener('devicemotion', (e) => this.handleMotion(e));
