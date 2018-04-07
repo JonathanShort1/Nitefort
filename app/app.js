@@ -23,8 +23,10 @@ class App {
     let wall = $('#wall');
     wall.width(shoot.width());
     wall.height($('html').height() - shoot.height());
-    shoot.on('touchstart', (e) => this.wallMode = true);
-    shoot.on('touchend', (e) => this.wallMode = false);
+    wall.on('touchstart', (e) => {
+      this.wallMode ^= 1;
+      if (this.wallMode) wall.addClass('toggled'); else wall.removeClass('toggled');
+    });
   }
 
   handleOrientation(event) {

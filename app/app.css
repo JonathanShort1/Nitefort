@@ -21,5 +21,13 @@ html, body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background-color: #777;
 }
+
+#wall.toggled {
+  background-color: #666;
+}
+
+#wall:not(.toggled) {
+  background-color: #aaa;
+}
+
