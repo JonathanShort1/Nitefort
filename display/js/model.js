@@ -11,18 +11,18 @@ class Model {
   connectWs() {
     if (window.location.protocol === "https:") {
       let splitUrl = location.href.split('/');
-      splitUrl = splitUrl.splice(1, splitUrl.length - 3);
-      ws = new WebSocket(`wss://${splitUrl.join('/')}/display`);
+      splitUrl = splitUrl.splice(1, splitUrl.length - 2);
+      this.ws = new WebSocket(`wss://${splitUrl.join('/')}`);
     } else {
-      ws = new WebSocket(`ws://${location.host}/display`);
+      this.ws = new WebSocket(`ws://${location.host}/display`);
     }
-    ws.onopen = () => {
+    this.ws.onopen = () => {
       // on open
       console.log("connected");
     };
-    ws.onclose = this.connectWs;
+    this.ws.onclose = this.connectWs;
 
-    ws.onmessage = this.onMessage;
+    this.ws.onmessage = this.onMessage;
   }
 
   onMessage(event) {
