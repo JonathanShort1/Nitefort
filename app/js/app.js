@@ -16,10 +16,7 @@ class App {
   handleOrientation(event) {
     var x = event.gamma;
     var y = event.beta;
-    var obj = {
-      type: 'move',
-      fields: { x, y }
-    }
+    var obj = { type: 'move', x, y }
     this.ws.send(JSON.stringify(obj));
   }
 }
