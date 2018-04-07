@@ -49,18 +49,21 @@ class Game {
 
   draw() {
     this.clear();
-    for (let id in model.players) {
-      this.drawPlayer(model.players[id]);
-    }
+
     for (let shot of model.shots) {
       this.drawShot(shot);
     }
+
+    for (let id in model.players) {
+      this.drawPlayer(model.players[id]);
+    }
+
   }
 
   drawPlayer(player){
     let ctx = this.ctx;
     ctx.beginPath();
-    ctx.arc(player.x, player.y, model.playerSize, 0, 2*Math.PI);
+    ctx.arc(player.x, player.y, player.size, 0, 2*Math.PI);
     ctx.fillStyle = player.color;
     ctx.fill();
   }
