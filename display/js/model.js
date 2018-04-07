@@ -17,6 +17,7 @@ class Model {
     }
     ws.onopen = () => {
       // on open
+      console.log("connected");
     };
     ws.onclose = this.connectWs;
 
