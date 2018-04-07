@@ -28,7 +28,7 @@ class App {
   }
 
   handleMotion(event) {
-    log(event.acceleration.x);
+    log(event.accelerationIncludingGravity.x);
   }
 }
 
