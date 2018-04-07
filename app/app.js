@@ -11,25 +11,24 @@ class App {
     this.ws = new WebSocket(webSocketUrl);
     this.ws.onopen = () => {
       window.addEventListener('deviceorientation', (e) => this.handleOrientation(e));
-      $('#shoot').addEventListener('click', (e) => handleShoot());
+
     }
+    $('#shoot').click(() => this.handleShoot());
     this.ws.onmessage = (e) => console.log(e.data);
   }
 
   handleOrientation(event) {
     let x = event.gamma;
-    let y = event.beta;
-    if (Math.abs(x) <= 5) x = 0;
-    if (Math.abs(y) <= 5) y = 0;
+    let y = -event.beta;
+    if (Math.abs(x) <= 5) x = 0; else this.previousX = x;
+    if (Math.abs(y) <= 5) y = 0; else this.previousY = y;
     let obj = { type: 'move', x, y };
-    this.previousX = x;
-    this.previousY = y;
     this.ws.send(JSON.stringify(obj));
   }
 
   handleShoot() {
     let obj = {
-      type: 'shoot',
+      type: 'shot',
       x: this.previousX,
       y: this.previousY
     };
