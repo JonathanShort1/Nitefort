@@ -83,8 +83,8 @@ class Player {
   }
 
   move(x, y) {
-    this.dx = msg.x;
-    this.dy = msg.y;
+    this.dx = x;
+    this.dy = y;
     let hypot = Math.hypot(this.dx, this.dy);
     if (hypot !== 0) {
       this.dx *= model.playerSpeed / hypot;
