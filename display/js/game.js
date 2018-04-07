@@ -86,6 +86,7 @@ class Game {
     ctx.strokeStyle="white";
     ctx.lineWidth=4;
     ctx.stroke();
+    ctx.lineWidth=0;
   }
 }
 
