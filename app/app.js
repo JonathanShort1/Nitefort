@@ -10,12 +10,20 @@ class App {
     this.android = /android/i.test(navigator.userAgent || navigator.vendor || window.opera);
     this.ws = new WebSocket(webSocketUrl);
     this.ws.onopen = () => window.addEventListener('deviceorientation', (e) => this.handleOrientation(e));
+    this.ws.onmessage = (e) => console.log(e.data);
+
+    this.wallMode = false;
 
     let shoot = $('#shoot');
     shoot.width($('body').width());
     shoot.height(shoot.width());
     shoot.on('touchstart', (e) => this.handleShoot(e));
-    this.ws.onmessage = (e) => console.log(e.data);
+
+    let wall = $('#wall');
+    wall.width(shoot.width());
+    wall.height($('html').height() - shoot.height());
+    shoot.on('touchstart', (e) => this.wallMode = true);
+    shoot.on('touchend', (e) => this.wallMode = false);
   }
 
   handleOrientation(event) {
@@ -33,11 +41,8 @@ class App {
     let touch = event.touches[0];
     let x = touch.pageX - offset.left - (shoot.width() / 2);
     let y = touch.pageY - offset.top - (shoot.height() / 2);
-    let obj = {
-      type: 'shot',
-      x: x,
-      y: y
-    };
+    let type = this.wallMode ? 'wall' : 'shot';
+    let obj = { type, x, y };
     this.ws.send(JSON.stringify(obj));
   }
 }
