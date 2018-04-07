@@ -10,7 +10,7 @@ class Model {
     this.minSize = 5;
 
     this.shotSize = 3;
-    this.playerSpeed = 130; // pixels per second
+    this.playerSpeed = 150; // pixels per second
     this.shotSpeed = 300;
   }
 

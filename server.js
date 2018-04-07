@@ -103,7 +103,6 @@ function handleClient(ws, msg) {
         console.log('unknown type: ' + msg.type);
     }
   } else {
-    console.log(msg);
     ws.send(JSON.stringify({"type" : "error", "message" : "No game available"}));
   }
 }
@@ -115,7 +114,7 @@ function handleDisplay(ws, msg) {
       case 'death':
         clientWS.send(JSON.stringify({
           type: 'death',
-          killedBy: msg.killedBy,
+          killedby: msg.killedby,
         }));
         break;
       case 'nameAssignment':

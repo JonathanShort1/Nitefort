@@ -20,7 +20,7 @@ class App {
 
   handleOrientation(event) {
     let x = event.gamma;
-    let y = event.beta;
+    let y = -event.beta;
     if (Math.abs(x) <= 5) x = 0; else this.previousX = x;
     if (Math.abs(y) <= 5) y = 0; else this.previousY = y;
     let obj = { type: 'move', x, y };
