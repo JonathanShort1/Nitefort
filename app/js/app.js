@@ -21,15 +21,18 @@ class App {
     let y = -event.beta;
     if (Math.abs(x) <= 5) x = 0;
     if (Math.abs(y) <= 5) y = 0;
-    let obj = { type: 'move', x: x, y: y }
+    let obj = { type: 'move', x, y };
     this.ws.send(JSON.stringify(obj));
   }
 
   handleMotion(event) {
     let x = event.accelerationIncludingGravity.x;
-    let y = event.accelerationIncludingGravity.y;
-    let z = event.accelerationIncludingGravity.z;
-    log(JSON.stringify({ x, y, z }));
+    let y = -event.accelerationIncludingGravity.y;
+    if (Math.abs(x) >= 15 || Math.abs(x) >= 15) {
+      let obj = { type: 'shot', x, y };
+      this.ws.send(JSON.stringify(obj));
+      log(JSON.stringify(obj));
+    }
   }
 }
 
