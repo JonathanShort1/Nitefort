@@ -5,6 +5,7 @@ class Model {
   constructor() {
     this.ws = null;
     this._players = {};
+    this.connectWs();
   }
 
   connectWs() {
@@ -50,7 +51,7 @@ class Model {
     return this._players;
   }
 
-  step(dt){
+  step(dt) {
     for (let id in this.players) {
       let player = this.players[id];
       player.x += player.dx * dt;
@@ -69,8 +70,8 @@ class Player {
     this.color = colors[this.id % colors.length];
     this.x = Math.floor(Math.random() * (game.width - spawnBorder * 2)) + spawnBorder;
     this.y = Math.floor(Math.random() * (game.height - spawnBorder * 2)) + spawnBorder;
-    this.dx=0;
-    this.dy=0;
+    this.dx = 0;
+    this.dy = 0;
   }
 }
 
