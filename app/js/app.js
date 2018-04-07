@@ -28,7 +28,8 @@ class App {
   handleMotion(event) {
     let x = event.accelerationIncludingGravity.x;
     let y = event.accelerationIncludingGravity.y;
-    log(JSON.stringify({ x, y }));
+    let z = event.accelerationIncludingGravity.z;
+    log(JSON.stringify({ x, y, z }));
   }
 }
 
