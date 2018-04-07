@@ -72,7 +72,7 @@ router.use(function (err, req, res, next) {
   res.status(500).send(err.message);
 });
 app.listen(21067);
-console.log('Server running, access game by going to http://138.251.206.220:21067/Nitefort/game.html');
+console.log('Server running, access game by going to https://js321.host.cs.st-andrews.ac.uk/nitefort/display/game.html');
 
 
 // ==================================================
@@ -118,6 +118,12 @@ function handleDisplay(ws, msg) {
           killedBy: msg.killedBy,
         }));
         break;
+      case 'nameAssignment':
+        clientWS.send(JSON.stringify( {
+          type: "nameAssignment",
+          id: msg.id,
+          name: msg.nameIndex
+        }));
       default:
         console.log('unknown type');
     }
