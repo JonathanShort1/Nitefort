@@ -2,7 +2,7 @@ function log(data) {
   $('body').prepend('<p>' + data + '</p>');
 }
 
-let webSocketUrl = 'ws://138.251.206.220:21067/Nitefort';
+let webSocketUrl = 'wss://js321.host.cs.st-andrews.ac.uk/nitefort/user';
 
 class App {
 
