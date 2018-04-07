@@ -14,13 +14,13 @@ class App {
     let shoot = $('#shoot');
     shoot.width($('body').width());
     shoot.height(shoot.width());
-    shoot.click((e) => this.handleShoot(e));
+    shoot.on('touchstart', (e) => this.handleShoot(e));
     this.ws.onmessage = (e) => console.log(e.data);
   }
 
   handleOrientation(event) {
     let x = event.gamma;
-    let y = -event.beta;
+    let y = event.beta;
     if (Math.abs(x) <= 5) x = 0; else this.previousX = x;
     if (Math.abs(y) <= 5) y = 0; else this.previousY = y;
     let obj = { type: 'move', x, y };
@@ -30,14 +30,14 @@ class App {
   handleShoot(event) {
     let shoot = $('#shoot');
     let offset = shoot.offset();
-    let x = event.pageX - offset.left - (shoot.width() / 2);
-    let y = event.pageY - offset.top - (shoot.height() / 2);
+    let touch = event.touches[0];
+    let x = touch.pageX - offset.left - (shoot.width() / 2);
+    let y = touch.pageY - offset.top - (shoot.height() / 2);
     let obj = {
       type: 'shot',
       x: x,
       y: y
     };
-    log(JSON.stringify(obj));
     this.ws.send(JSON.stringify(obj));
   }
 }
