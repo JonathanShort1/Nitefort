@@ -1,5 +1,5 @@
 function log(data) {
-  $('body').append('<pre>' + data + '</pre>');
+  $('body').prepend('<pre>' + data + '</pre>');
 }
 
 let webSocketUrl = 'wss://js321.host.cs.st-andrews.ac.uk/nitefort/user';
@@ -28,9 +28,7 @@ class App {
   }
 
   handleMotion(event) {
-    var x = event.acceleration.x;
-    var y = event.acceleration.y;
-    log(JSON.stringify({ x, y }));
+    log(event.acceleration.x);
   }
 }
 
