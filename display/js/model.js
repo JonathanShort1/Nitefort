@@ -22,7 +22,7 @@ class Model {
     };
     this.ws.onclose = this.connectWs;
 
-    this.ws.onmessage = this.onMessage;
+    this.ws.onmessage = (e)=>{this.onMessage(e)};
   }
 
   onMessage(event) {
