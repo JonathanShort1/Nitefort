@@ -8,8 +8,8 @@ class App {
 
   init() {
     this.ws = new WebSocket(webSocketUrl);
-    console.log(this.ws);
-    window.addEventListener('deviceorientation', (e) => { this.handleOrientation(e) }, true);
+    this.ws.onopen = () => window.addEventListener('deviceorientation', (e) => this.handleOrientation(e), true);
+    this.ws.onmessage = (e) => console.log(e.data);
     log('initialized');
   }
 
