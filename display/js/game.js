@@ -58,7 +58,7 @@ class Game {
   drawPlayer(player){
     let ctx = this.ctx;
     ctx.beginPath();
-    ctx.arc(player.x, player.y, 8, 0, 2*Math.PI);
+    ctx.arc(player.x, player.y, model.playerSize, 0, 2*Math.PI);
     ctx.fillStyle = player.color;
     ctx.fill();
   }

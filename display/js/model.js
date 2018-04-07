@@ -1,11 +1,13 @@
-let playerSpeed = 100; // pixels per second
-let playerSize = 7;   // px
-
 class Model {
   constructor() {
     this.ws = null;
-    this._players = {};
+    this.players = {};
+    this.shots = [];
     this.connectWs();
+
+    this.playerSize = 7;
+    this.playerSpeed = 130; // pixels per second
+    this.shotSpeed = 300;
   }
 
   connectWs() {
@@ -40,26 +42,23 @@ class Model {
         break;
       case 'move':
         player = this.players[msg.id];
-        player.dx = msg.x;
-        player.dy = msg.y;
-        let hypot = Math.hypot(player.dx, player.dy);
-        if (hypot !== 0) {
-          player.dx *= playerSpeed / hypot;
-          player.dy *= playerSpeed / hypot;
-        }
+        player.move(msg.x, msg.y);
+        break;
+      case 'shot':
+        player = this.players[msg.id];
+        let shot = new Shot(msg, player);
+        this.shots.push(shot);
         break;
     }
-  }
-
-  get players() {
-    return this._players;
   }
 
   step(dt) {
     for (let id in this.players) {
       let player = this.players[id];
-      player.x += player.dx * dt;
-      player.y += player.dy * dt;
+      player.step(dt);
+    }
+    for (let shot of this.shots) {
+      shot.step(dt);
     }
   }
 }
@@ -76,6 +75,57 @@ class Player {
     this.y = Math.floor(Math.random() * (game.height - spawnBorder * 2)) + spawnBorder;
     this.dx = 0;
     this.dy = 0;
+  }
+
+  step(dt) {
+    this.x += this.dx * dt;
+    this.y += this.dy * dt;
+  }
+
+  move(x, y) {
+    this.dx = msg.x;
+    this.dy = msg.y;
+    let hypot = Math.hypot(this.dx, this.dy);
+    if (hypot !== 0) {
+      this.dx *= model.playerSpeed / hypot;
+      this.dy *= model.playerSpeed / hypot;
+    }
+    if (this.x < model.playerSize) {
+      this.x = model.playerSize;
+    }
+    if (this.y < model.playerSize) {
+      this.y = model.playerSize;
+    }
+    if (this.x > game.width - model.playerSize) {
+      this.x = game.width - model.playerSize;
+    }
+    if (this.y > game.height - model.playerSize) {
+      this.y = game.height - model.playerSize;
+    }
+  }
+}
+
+class Shot {
+  constructor(msg, player) {
+    this.x = player.x;
+    this.y = player.y;
+
+    this.shooterId = player.id;
+
+    this.dx = msg.x;
+    this.dy = msg.y;
+
+    let hypot = Math.hypot(this.dx, this.dy);
+
+    if (hypot !== 0) {
+      this.dx *= model.shotSpeed / hypot;
+      this.dy *= model.shotSpeed / hypot;
+    }
+  }
+
+  step(dt) {
+    this.x += this.dx * dt;
+    this.y += this.dy * dt;
   }
 }
 
