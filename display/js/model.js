@@ -22,7 +22,9 @@ class Model {
     };
     this.ws.onclose = this.connectWs;
 
-    this.ws.onmessage = (e)=>{this.onMessage(e)};
+    this.ws.onmessage = (e) => {
+      this.onMessage(e)
+    };
   }
 
   onMessage(event) {
@@ -41,8 +43,10 @@ class Model {
         player.dx = msg.x;
         player.dy = msg.y;
         let hypot = Math.hypot(player.dx, player.dy);
-        player.dx *= playerSpeed / hypot;
-        player.dy *= playerSpeed / hypot;
+        if (hypot !== 0) {
+          player.dx *= playerSpeed / hypot;
+          player.dy *= playerSpeed / hypot;
+        }
         break;
     }
   }
