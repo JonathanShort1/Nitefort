@@ -1,5 +1,5 @@
 let colors = ["red", "green", "blue", "yellow", "orange"];
-let skins = ["batman.jpeg", "america.png", "hulk.jpeg", "spiderman.jpg", "superman.jpg"];
+let skins = ["batman.png", "america.png", "hulk.png", "spiderman.png", "superman.png"];
 let spawnBorder = 50;
 
 class Player {
@@ -47,9 +47,9 @@ class Player {
     }
   }
 
-  damage(killerId){
+  damage(killerId) {
     this.hp--;
-    if (this.hp <= 0){
+    if (this.hp <= 0) {
       model.kill(this.id, killerId);
     }
   }
