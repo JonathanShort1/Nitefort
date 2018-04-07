@@ -1,0 +1,11 @@
+{
+  "name": "Nitefort",
+  "version": "0.0.1",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "4.16",
+    "express-ws": "^3.0.0",
+    "ws": "3.2",
+    "requirejs": "^2.3.5"
+  }
+}
