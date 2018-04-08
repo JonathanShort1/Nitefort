@@ -32,6 +32,12 @@ class Controller {
     this.ws = new WebSocket(url);
 
     this.ws.onopen = () => {
+
+      play.click(() => {
+        $('#landing').hide();
+        $('#app').show();
+        this.app.init(this.ws);
+      });
     };
     this.ws.onmessage = (e) => {
       let obj = JSON.parse(e.data);
@@ -45,10 +51,6 @@ class Controller {
 
     this.ws.onclose = () => closeCallback();
 
-    play.click(() => {
-      $('#landing').hide();
-      $('#app').show();
-      this.app.init(this.ws);
-    });
+
   }
 }
