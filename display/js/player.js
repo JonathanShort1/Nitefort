@@ -16,6 +16,8 @@ class Player {
   }
 
   step(dt) {
+    let [px, py] = [this.x, this.y];
+
     this.x += this.dx * dt;
     this.y += this.dy * dt;
 
@@ -30,6 +32,21 @@ class Player {
     }
     if (this.y > game.height - this.size) {
       this.y = game.height - this.size;
+    }
+
+    for (let wall of model.walls) {
+      let thisEq = Wall.vecEq([px, py], this.x, this.y);
+      let wallEq = Wall.vecEq(wall.a, wall.b);
+      let thisCross = Wall.crossingPos(thisEq, wallEq);
+      if (thisCross !== null && Wall.crossingPos(wallEq, thisEq) !== null) {
+        let wallLineDist =
+          Math.abs(thisEq.dir[0] * wallEq.dir[1] - thisEq.dir[1] * wallEq.dir[0])
+          / Math.hypot(thisEq.dir[0], thisEq.dir[1])
+          / Math.hypot(wallEq.dir[0], wallEq.dir[1]);
+        thisCross -= Math.sign(thisCross) * wallLineDist;
+        this.x = thisEq.start[0] + thisEq.dir[0] *thisCross;
+        this.y = thisEq.start[1] + thisEq.dir[1] *thisCross;
+      }
     }
   }
 

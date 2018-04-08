@@ -29,7 +29,8 @@ class Wall {
     return {
       start: a,
       dir: Wall.unitVec(b[0] - a[0], b[1] - a[1]),
-      limit: Math.hypot(a[0] - b[0], a[1] - b[1])
+      limita: 0,
+      limitb: Math.hypot(a[0] - b[0], a[1] - b[1])
     }
   }
 
@@ -43,12 +44,25 @@ class Wall {
     if (divisor === 0)
       return null;
     intersection_lambda /= divisor;
-    let lim = a_equation.limit;
     let inRange = true;
-    inRange &= 0 <= intersection_lambda;
-    inRange &= intersection_lambda <= lim;
+    inRange &= a_equation.limita <= intersection_lambda;
+    inRange &= intersection_lambda <= a_equation.limitb;
 
     return inRange ? intersection_lambda : null;
+  }
+
+  distToPoint(x, y) {
+    let thisEq = Wall.vecEq(this.a, this.b);
+
+    let perp = Wall.vecEq(this.a, this.b);
+    perp.start = [x, y];
+    perp.dir = [-perp.dir[1], perp.dir[0]];
+    perp.limita = -Infinity;
+    perp.limitb = Infinity;
+
+    let cross = Wall.crossingPos(thisEq, perp);
+
+    return cross===null ? null : Wall.crossingPos(perp, thisEq);
   }
 
   damage() {
