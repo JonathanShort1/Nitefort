@@ -1,6 +1,6 @@
-let webSocketUrl = 'wss://js321.host.cs.st-andrews.ac.uk/nitefort/user';
+//let webSocketUrl = 'wss://js321.host.cs.st-andrews.ac.uk/nitefort/user';
 
-// let webSocketUrl = 'wss://oas.host.cs.st-andrews.ac.uk/nitefort/user';
+let webSocketUrl = 'wss://oas.host.cs.st-andrews.ac.uk/nitefort/user';
 
 class Controller {
 
@@ -21,7 +21,7 @@ class Controller {
       let splitUrl = location.href.split('/');
       let ind = splitUrl.indexOf("user");
       splitUrl = splitUrl.splice(1, ind);
-      this.connectWs(`wss://${splitUrl.join('/')}/`, ()=>{});
+      this.connectWs(`wss://${splitUrl.join('/')}/`, () => { });
     })
   }
 

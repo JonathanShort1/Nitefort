@@ -35,14 +35,14 @@ router.ws('/user', function (ws, req) {
       console.log(id);
       ws.clientId = id;
       clients.push(ws);
-      game.send(JSON.stringify({"type" : "playerConnect", "id" : id}));
-        ws.send(JSON.stringify( {type: "nameAssignment",id: id, name: names[id]}));
+      game.send(JSON.stringify({ "type": "playerConnect", "id": id }));
+      ws.send(JSON.stringify({ type: "nameAssignment", id: id, name: names[id] }));
       numClients += 1;
     } else {
-      ws.send(JSON.stringify({"type" : "error", "message" : "Server full"}));
+      ws.send(JSON.stringify({ "type": "error", "message": "Server full" }));
     }
   } else {
-    ws.send(JSON.stringify({"type" : "error", "message" : "No game available"}));
+    ws.send(JSON.stringify({ "type": "error", "message": "No game available" }));
   }
 
   ws.on("message", function (msg) {
@@ -77,7 +77,7 @@ router.ws('/display', function (ws, req) {
   })
 });
 
-app.post("/voice", function(req, res) {
+app.post("/voice", function (req, res) {
   voiceHandler();
 });
 
@@ -125,11 +125,17 @@ function handleClient(ws, msg) {
           y: msg.y
         }));
         break;
+      case 'switch':
+        game.send(JSON.stringify({
+          type: 'switch',
+          id: ws.clientId
+        }));
+        break;
       default:
         console.log('unknown type: ' + msg.type);
     }
   } else {
-    ws.send(JSON.stringify({"type" : "error", "message" : "No game available"}));
+    ws.send(JSON.stringify({ "type": "error", "message": "No game available" }));
   }
 }
 
@@ -137,6 +143,13 @@ function handleDisplay(ws, msg) {
   let clientWS = clients.find(c => c.clientId === msg.id);
   if (clientWS !== null) {
     switch (msg.type) {
+      case 'weapon':
+        clientWS.send(JSON.stringify({
+          type: 'weapon',
+          name: msg.name,
+          reload: msg.reload
+        }));
+        break;
       case 'death':
         clientWS.send(JSON.stringify({
           type: 'death',
@@ -149,8 +162,8 @@ function handleDisplay(ws, msg) {
   } else {
     console.log(msg);
     ws.send(JSON.stringify({
-      "type" : "error",
-       "message" : "Client Id not present"
-     }));
+      "type": "error",
+      "message": "Client Id not present"
+    }));
   }
 }

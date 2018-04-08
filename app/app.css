@@ -1,14 +1,8 @@
 #shoot {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
   background-color: #f00;
 }
 
-#wall {
+#wall, #weapon, #shoot {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -17,11 +11,51 @@
   user-select: none;
 }
 
-#wall.toggled {
-  background-color: #666;
+#wall.wall-mode {
+  background-color: #f00;
 }
 
-#wall:not(.toggled) {
-  background-color: #aaa;
+#wall:not(.wall-mode) {
+  background-image: url("images/bricks.png");
+  background-size: contain;
+  background-color: #fff;
 }
 
+#shoot.wall-mode.enabled {
+  background-image: url("images/bricks.png");
+  background-size: contain;
+}
+
+#shoot.wall-mode:not(.enabled) {
+  background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url("images/bricks.png");
+  background-size: contain;
+}
+
+#shoot:not(.wall-mode).enabled {
+  background-color: #f00;
+}
+
+#shoot:not(.wall-mode):not(.enabled) {
+  background-color: #f77;
+}
+
+#weapon {
+  background-color: #000;
+}
+
+.row {
+  display:flex;
+  flex-direction:row;
+  justify-content: space-around;
+}
+
+.column1 {
+  display:flex;
+  flex-direction:column;
+}
+
+
+.column2 {
+  display:flex;
+  flex-direction:column;
+}
