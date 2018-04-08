@@ -2,6 +2,8 @@ let wallDist = 30;
 let wallHp = 5;
 let wallLen = 40;
 
+let wallLife = 30 * 1000; // 30 seconds
+
 class Wall {
   constructor(x, y, player) {
     this.hp = wallHp;
@@ -18,6 +20,8 @@ class Wall {
       mid[0] + y * wallLen / hypot,
       mid[1] - x * wallLen / hypot
     ];
+
+    setTimeout(()=>this.destroyWall(), wallLife);
   }
 
   static unitVec(x, y) {

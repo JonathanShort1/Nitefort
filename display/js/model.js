@@ -30,7 +30,7 @@ class Model {
     this.ws.onclose = this.connectWs;
 
     this.ws.onmessage = (e) => {
-      console.log(e.data);
+      // console.log(e.data);
       this.onMessage(e)
     };
   }

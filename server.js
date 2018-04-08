@@ -28,7 +28,7 @@ router.use(bodyParser.json());
 router.ws('/user', function (ws, req) {
   console.log('Client connection made!');
 
-  if (game != null) {
+  if (game !== null) {
     if (numClients < maxNumClients) {
       let id = ids.findIndex((a) => !a);
       ids[id] = true;
@@ -59,7 +59,7 @@ router.ws('/user', function (ws, req) {
 });
 
 router.ws('/display', function (ws, req) {
-  if (game == null) {
+  if (game === null) {
     console.log('display connected!');
     game = ws;
   } else {
@@ -99,7 +99,7 @@ console.log('Server running, access game by going to https://js321.host.cs.st-an
 
 
 function handleClient(ws, msg) {
-  if (game != null) {
+  if (game !== null) {
     switch (msg.type) {
       case 'move':
         game.send(JSON.stringify({
@@ -134,8 +134,8 @@ function handleClient(ws, msg) {
 }
 
 function handleDisplay(ws, msg) {
-  let clientWS = clients.find(c => c.clientId == msg.id);
-  if (clientWS != null) {
+  let clientWS = clients.find(c => c.clientId === msg.id);
+  if (clientWS !== null) {
     switch (msg.type) {
       case 'death':
         clientWS.send(JSON.stringify({
