@@ -20,7 +20,7 @@ class Model {
   }
 
   static maybeNewPickup() {
-    if (Math.random() < 1000 / pickupDelay) {
+    if (Math.random() < 0.3) {
       model.pickups.push(newPickup());
     }
   }

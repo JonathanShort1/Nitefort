@@ -64,7 +64,8 @@ class Speed extends Pickup {
     super("speed.png");
   }
   action(player) {
-    player.speed += 1;
+    player.speed *=2;
+    setTimeout(()=>player.speed/=2, 10*1000)
   }
 }
 
