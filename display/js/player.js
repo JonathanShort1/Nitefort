@@ -13,7 +13,12 @@ class Player {
     this.dx = 0;
     this.dy = 0;
     this.hp = model.startHp;
+    this.weapons = [new Pistol()];
+    this.weaponInd = 0;
+    this.switchWeapon();
+    this.speed = model.playerSpeed;
   }
+
 
   step(dt) {
     let [px, py] = [this.x, this.y];
@@ -34,21 +39,7 @@ class Player {
       this.y = game.height - this.size;
     }
 
-    // for (let wall of model.walls) {
-    //   let thisEq = Wall.vecEq([px, py], this.x, this.y);
-    //   let wallEq = Wall.vecEq(wall.a, wall.b);
-    //   let thisCross = Wall.crossingPos(thisEq, wallEq);
-    //   if (thisCross !== null && Wall.crossingPos(wallEq, thisEq) !== null) {
-    //     console.log("wall collision");
-    //     let wallLineDist =
-    //       Math.abs(thisEq.dir[0] * wallEq.dir[1] - thisEq.dir[1] * wallEq.dir[0])
-    //       / Math.hypot(thisEq.dir[0], thisEq.dir[1])
-    //       / Math.hypot(wallEq.dir[0], wallEq.dir[1]);
-    //     thisCross -= Math.sign(thisCross) * wallLineDist;
-    //     this.x = thisEq.start[0] + thisEq.dir[0] *thisCross;
-    //     this.y = thisEq.start[1] + thisEq.dir[1] *thisCross;
-    //   }
-    // }
+
     for (let wall of model.walls) {
       let dist = wall.distToPoint(this.x, this.y);
       if (dist !== null && Math.abs(dist) < this.size) {
@@ -74,29 +65,39 @@ class Player {
     this.dy = y;
     let hypot = Math.hypot(this.dx, this.dy);
     if (hypot !== 0) {
-      this.dx *= model.playerSpeed / hypot;
-      this.dy *= model.playerSpeed / hypot;
+      this.dx *= this.speed / hypot;
+      this.dy *= this.speed / hypot;
     }
   }
 
-  damage(killerId) {
-    this.hp--;
+  damage(shot) {
+    this.hp-=shot.damage;
     if (this.hp <= 0) {
-      model.kill(this.id, killerId);
+      model.kill(this.id, shot.shooterId);
     }
   }
 
   collide(p) {
-    let [x,y] = p;
+    let [x, y] = p;
     let hypot = Math.hypot(x - this.x, y - this.y);
 
     if (hypot < this.size) {
       if (hypot === 0) {
         this.x += 1;
-        hypot=1;
+        hypot = 1;
       }
-      this.x = x + (this.x-x)/hypot*this.size;
-      this.y = y + (this.y-y)/hypot*this.size;
+      this.x = x + (this.x - x) / hypot * this.size;
+      this.y = y + (this.y - y) / hypot * this.size;
     }
+  }
+
+  get weapon() {
+    return this.weapons[this.weaponInd];
+  }
+
+  switchWeapon() {
+    console.log("switch");
+    this.weaponInd = (this.weaponInd + 1) % this.weapons.length;
+    model.ws.send(JSON.stringify({'type': 'weapon', name: this.weapon.name, reload: this.weapon.reload, id: this.id}));
   }
 }

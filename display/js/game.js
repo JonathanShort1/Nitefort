@@ -48,6 +48,10 @@ class Game {
   draw() {
     this.clear();
 
+    for (let pickup of model.pickups) {
+      pickup.draw(this.ctx);
+    }
+
     for (let shot of model.shots) {
       this.drawShot(shot);
     }
@@ -68,7 +72,7 @@ class Game {
   drawShot(shot) {
     let ctx = this.ctx;
     ctx.beginPath();
-    ctx.arc(shot.x, shot.y, model.shotSize, 0, 2*Math.PI);
+    ctx.arc(shot.x, shot.y, shot.size, 0, 2*Math.PI);
     ctx.fillStyle = "white";
     ctx.fill();
   }

@@ -1,5 +1,5 @@
 class Shot {
-  constructor(msg, player) {
+  constructor(msg, player, size, speed) {
     this.x = player.x;
     this.y = player.y;
 
@@ -11,12 +11,15 @@ class Shot {
     let hypot = Math.hypot(this.dx, this.dy);
 
     if (hypot !== 0) {
-      this.dx *= model.shotSpeed / hypot;
-      this.dy *= model.shotSpeed / hypot;
+      this.dx *= speed / hypot;
+      this.dy *= speed / hypot;
 
-      this.x += this.dx / model.shotSpeed * player.size;
-      this.y += this.dy / model.shotSpeed * player.size;
+      this.x += this.dx / speed * player.size;
+      this.y += this.dy / speed * player.size;
     }
+
+    this.size = 3;
+    this.damage = 1;
   }
 
   step(dt) {
@@ -46,8 +49,8 @@ class Shot {
         continue;
       }
 
-      if (Math.hypot(player.x - this.x, player.y - this.y) < model.shotSize + player.size) {
-        player.damage(this.shooterId);
+      if (Math.hypot(player.x - this.x, player.y - this.y) < this.size + player.size) {
+        player.damage(this);
 
         this.destroyShot();
         break;
@@ -63,11 +66,23 @@ class Shot {
   }
 
   bounds() {
-    if ((this.x < -model.shotSize)
-      || (this.y < -model.shotSize)
-      || (this.x > game.width + model.shotSize)
-      || (this.y > game.height + model.shotSize)) {
+    if ((this.x < -this.size)
+      || (this.y < -this.size)
+      || (this.x > game.width + this.size)
+      || (this.y > game.height + this.size)) {
       this.destroyShot()
     }
+  }
+}
+
+class PistolShot extends Shot {
+  constructor(msg, player) {
+    super(msg, player, 3, 300);
+  }
+}
+
+class SniperShot extends Shot {
+  constructor(msg, player) {
+    super(msg, player, 4, 1000);
   }
 }

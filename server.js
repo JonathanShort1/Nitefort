@@ -68,7 +68,7 @@ router.ws('/display', function (ws, req) {
 
   ws.on('message', function (msg) {
     console.log('Message received');
-    handleDisplay(ws, msg);
+    handleDisplay(ws, JSON.parse(msg));
   });
 
   ws.on('close', function () {
@@ -144,6 +144,7 @@ function handleDisplay(ws, msg) {
   if (clientWS !== null) {
     switch (msg.type) {
       case 'weapon':
+        console.log("reload: "+msg.reload);
         clientWS.send(JSON.stringify({
           type: 'weapon',
           name: msg.name,
@@ -157,7 +158,7 @@ function handleDisplay(ws, msg) {
         }));
         break;
       default:
-        console.log('unknown type');
+        console.log('unknown type '+JSON.stringify(msg));
     }
   } else {
     console.log(msg);
