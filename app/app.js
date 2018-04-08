@@ -92,6 +92,7 @@ class App {
     switch (obj.type) {
       case 'weapon':
         this.weaponReloadSpeed = obj.reload;
+        $('#weapon').text(obj.name);
         break;
     }
   }
