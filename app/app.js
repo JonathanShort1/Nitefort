@@ -14,7 +14,7 @@ class App {
     this.godMode = false;
 
     this.wallReloadSpeed = 1000; // 1 second
-    this.weaponReloadSpeed = 1000;
+    this.weaponReloadSpeed = 800; // pistol
 
     let shoot = $('#shoot');
     shoot.width($('body').width());
