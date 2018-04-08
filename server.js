@@ -5,8 +5,11 @@ let expressWs = require('express-ws')(app);
 let fs = require('fs');
 let https = require('https');
 
+let numClients = 0;
+let maxNumClients = 5;
+let ids = Array.from(Array(maxNumClients), (_, x) => false);
 let clients = [];
-let clientId = 0;
+let names = ["batman", "america", "hulk", "spiderman", "superman"];
 let game = null;
 
 let router = express.Router();
@@ -23,15 +26,24 @@ router.use(bodyParser.json());
 // ==================================================
 
 router.ws('/user', function (ws, req) {
-  console.log('Client connection made! ' + clientId);
-  ws.clientId = clientId;
-  clients.push(ws);
+  console.log('Client connection made!');
+
   if (game != null) {
-    game.send(JSON.stringify({"type" : "playerConnect", "id" : clientId}));
+    if (numClients < maxNumClients) {
+      let id = ids.findIndex((a) => !a);
+      ids[id] = true;
+      console.log(id);
+      ws.clientId = id;
+      clients.push(ws);
+      game.send(JSON.stringify({"type" : "playerConnect", "id" : id}));
+        ws.send(JSON.stringify( {type: "nameAssignment",id: id, name: names[id]}));
+      numClients += 1;
+    } else {
+      ws.send(JSON.stringify({"type" : "error", "message" : "Server full"}));
+    }
   } else {
     ws.send(JSON.stringify({"type" : "error", "message" : "No game available"}));
   }
-  clientId += 1;
 
   ws.on("message", function (msg) {
     handleClient(ws, JSON.parse(msg));
@@ -39,8 +51,10 @@ router.ws('/user', function (ws, req) {
 
   ws.on('close', function () {
     console.log('client leaving');
+    ids[ws.clientId] = false;
     let index = clients.indexOf(ws);
     clients.splice(index, 1);
+    numClients -= 1;
   });
 });
 
@@ -129,12 +143,6 @@ function handleDisplay(ws, msg) {
           killedby: msg.killedby,
         }));
         break;
-      case 'nameAssignment':
-        clientWS.send(JSON.stringify( {
-          type: "nameAssignment",
-          id: msg.id,
-          name: msg.nameIndex
-        }));
       default:
         console.log('unknown type');
     }

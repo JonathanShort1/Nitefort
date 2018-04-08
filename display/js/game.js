@@ -9,7 +9,6 @@ class Game {
 
   init() {
     let canvas = $("#canvas")[0];
-    let canvas_wrapper = $("#canvas-wrapper")[0];
     this.width = this.height = $(window).height();
 
     canvas.height = this.height;
@@ -43,7 +42,7 @@ class Game {
     ctx.clearRect(0, 0, this.width, this.height);
     ctx.fillStyle = this.bg;
     ctx.fillRect(0, 0, this.width, this.height);
-    ctx.stroke();
+    ctx.fill();
   }
 
   draw() {
@@ -63,11 +62,7 @@ class Game {
 
   drawPlayer(player){
     let ctx = this.ctx;
-    /*ctx.beginPath();
-    ctx.arc(player.x, player.y, player.size, 0, 2*Math.PI);
-    ctx.fillStyle = player.color;
-    ctx.fill();*/
-    ctx.drawImage(player.skin, player.x, player.y, player.size, player.size);
+    ctx.drawImage(player.skin, player.x - player.size, player.y - player.size, player.size * 2, player.size * 2);
   }
 
   drawShot(shot) {
