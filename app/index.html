@@ -6,15 +6,25 @@
   <title>Nitefort</title>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="app.js"></script>
+  <script src="controller.js"></script>
+  <link href="index.css" rel="stylesheet">
   <link href="app.css" rel="stylesheet">
 </head>
 
 <body>
-  <div id="shoot"></div>
-  <div id="wall"></div>
+  <div id="landing">
+    <div id="status">Connecting...</div>
+    <div id="play">PLAY</div>
+  </div>
+  <div id="app">
+      <div id="shoot"></div>
+      <div id="wall"></div>
+  </div>
   <script>
     $(function () {
-      app.init();
+      let controller = new Controller();
+      let app = new App();
+      controller.init(app);
     })
   </script>
 </body>

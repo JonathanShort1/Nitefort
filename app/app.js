@@ -2,15 +2,11 @@ function log(data) {
   $('body').append('<pre>' + data + '</pre>');
 }
 
-let webSocketUrl = 'wss://js321.host.cs.st-andrews.ac.uk/nitefort/user';
-
 class App {
 
-  init() {
-    this.android = /android/i.test(navigator.userAgent || navigator.vendor || window.opera);
-    this.ws = new WebSocket(webSocketUrl);
-    this.ws.onopen = () => window.addEventListener('deviceorientation', (e) => this.handleOrientation(e));
-    this.ws.onmessage = (e) => console.log(e.data);
+  init(ws) {
+    this.ws = ws;
+    window.addEventListener('deviceorientation', (e) => this.handleOrientation(e));
 
     this.wallMode = false;
     this.godMode = false;
@@ -60,5 +56,3 @@ class App {
     this.ws.send(JSON.stringify(obj));
   }
 }
-
-app = new App();

@@ -1,0 +1,17 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#status {
+  background-color: #888;
+  font-size: 5em;
+  text-align: center;
+}
+
+#play {
+  background-color: #0a0;
+  font-size: 15em;
+  text-align: center;
+}
