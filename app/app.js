@@ -1,5 +1,5 @@
 function log(data) {
-  $('body').append('<pre>' + data + '</pre>');
+  $('body').append(`<pre>${data}</pre>`);
 }
 
 class App {
@@ -26,12 +26,19 @@ class App {
   }
 
   handleOrientation(event) {
-    let x = event.gamma;
-    let y = -event.beta;
-    if (Math.abs(x) <= 5) x = 0; else this.previousX = x;
-    if (Math.abs(y) <= 5) y = 0; else this.previousY = y;
-    let obj = { type: 'move', x, y };
-    this.ws.send(JSON.stringify(obj));
+    let x = Math.round(event.gamma);
+    let y = Math.round(-event.beta);
+    if (Math.abs(x) <= 5) x = 0;
+    if (Math.abs(y) <= 5) y = 0;
+
+    if (x!==this.previousX || y!==this.previousY ) {
+      let obj = {type: 'move', x, y};
+
+      this.ws.send(JSON.stringify(obj));
+      this.previousX = x;
+      this.previousY = y;
+    }
+
     if (this.godMode) {
       for (let i = -1; i <= 1; i += 2) {
         for (let j = -1; j <= 1; j += 2) {
