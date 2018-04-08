@@ -112,4 +112,4 @@ class Sniper extends Weapon {
 
 
 
-let ps = [HealthPickup, SMG, Sniper];
+let ps = [HealthPickup, SMG, Sniper, Speed];
